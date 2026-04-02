@@ -11,7 +11,7 @@ extension Color {
     // Design System - Color Palette
     static let luminaBackground = Color(hex: "#FAFAFA")
     static let luminaSoftBlue = Color(hex: "#E8F1F8")
-    static let luminaAccentBlue = Color(hex: "#A8C4FF")
+    static let luminaAccentBlue = Color(hex: "#306FF1")
     static let luminaAccentPurple = Color(hex: "#BDB2FF")
     
     // UI Elements

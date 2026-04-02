@@ -29,7 +29,7 @@ extension DashboardViewNavigationBar {
             .frame(width: 24, height: 24)
             .padding()
             .background(
-                Color.luminaSoftBlue
+                Color.white
             )
             .clipShape(Circle())
     }
@@ -50,7 +50,7 @@ extension DashboardViewNavigationBar {
             .frame(width: 24, height: 24)
             .padding()
             .background(
-                Color.luminaSoftBlue
+                Color.white
             )
             .clipShape(Circle())
     }

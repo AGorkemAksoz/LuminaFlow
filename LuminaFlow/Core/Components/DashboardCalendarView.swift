@@ -8,49 +8,120 @@
 import SwiftUI
 
 struct DashboardCalendarView: View {
-    let dummyCalendarData: [String: Int] = ["Mon": 11, "Tue" :12, "Wed": 13, "Thu": 14, "Fri": 15, "Sat": 16, "Sun": 17]
-    
-    let orderedDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    
+    @State private var selectedDate: Date = DashboardCalendarView.calendar.startOfDay(for: Date())
+
+    private static var calendar: Calendar {
+        var cal = Calendar.autoupdatingCurrent
+        cal.firstWeekday = 2 // Monday-first to match Mon–Sun strip
+        return cal
+    }
+
+    private var calendar: Calendar { Self.calendar }
+
+    private var weekDays: [Date] {
+        guard
+            let weekStart = calendar.dateInterval(of: .weekOfYear, for: selectedDate)?.start
+        else { return [] }
+        return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: weekStart) }
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
-            Text("October 2023")
+            Text(weekTitle(for: weekDays))
                 .luminaStyle(.subheading)
                 .bold()
-            
+
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: LuminaSpacing.m) {
-                    // Sort by weekday order (or just alphabetically if you prefer)
-                    ForEach(orderedDays, id: \.self) { dayKey in
-                        if let date = dummyCalendarData[dayKey] {
-                            DashboardCalendarViewCell(day: dayKey.uppercased(),
-                                                      date: date)
+                    ForEach(weekDays, id: \.self) { day in
+                        let dayStart = calendar.startOfDay(for: day)
+                        Button {
+                            selectedDate = dayStart
+                        } label: {
+                            DashboardCalendarViewCell(
+                                day: Self.weekdayFormatter.string(from: day).uppercased(),
+                                date: calendar.component(.day, from: day),
+                                isSelectedDay: calendar.isDate(day, inSameDayAs: selectedDate)
+                            )
                         }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal)
             }
-        }.padding(.horizontal)
+        }
+        .padding(.horizontal)
     }
+
+    private func weekTitle(for days: [Date]) -> String {
+        guard let first = days.first, let last = days.last else { return "" }
+
+        let y1 = calendar.component(.year, from: first)
+        let y2 = calendar.component(.year, from: last)
+        let m1 = calendar.component(.month, from: first)
+        let m2 = calendar.component(.month, from: last)
+
+        if y1 == y2, m1 == m2 {
+            return "\(Self.monthFormatter.string(from: first)) \(Self.yearFormatter.string(from: first))"
+        }
+        if y1 == y2 {
+            return "\(Self.monthFormatter.string(from: first)) – \(Self.monthFormatter.string(from: last)) \(Self.yearFormatter.string(from: first))"
+        }
+        return "\(Self.monthFormatter.string(from: first)) \(Self.yearFormatter.string(from: first)) – \(Self.monthFormatter.string(from: last)) \(Self.yearFormatter.string(from: last))"
+    }
+
+    private static let weekdayFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = .autoupdatingCurrent
+        f.dateFormat = "EEE"
+        return f
+    }()
+
+    private static let monthFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = .autoupdatingCurrent
+        f.dateFormat = "MMMM"
+        return f
+    }()
+
+    private static let yearFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = .autoupdatingCurrent
+        f.dateFormat = "yyyy"
+        return f
+    }()
 }
+
 #Preview {
     DashboardCalendarView()
 }
 
-
 struct DashboardCalendarViewCell: View {
     let day: String
     let date: Int
+    var isSelectedDay: Bool
+
+    let gradient = Gradient(colors: [Color.luminaAccentBlue,
+                                       Color.luminaAccentBlue.opacity(0.3)])
+
     var body: some View {
         VStack(spacing: LuminaSpacing.s) {
             Text(day)
                 .luminaStyle(.smallCaps)
             Text(String(date))
                 .luminaStyle(.headline)
+            if isSelectedDay {
+                Image(systemName: "circle.fill")
+                    .resizable()
+                    .frame(width: 6, height: 6)
+            }
         }
         .padding()
-        .background(Color.white)
+        .background(
+            isSelectedDay
+                ? AnyShapeStyle(LinearGradient(gradient: gradient, startPoint: .bottomLeading, endPoint: .topTrailing))
+            : AnyShapeStyle(Color.white)
+        )
         .clipShape(.rect(cornerRadius: 16))
     }
-    
 }
