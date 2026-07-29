@@ -13,7 +13,7 @@ extension Color {
     static let luminaSoftBlue = Color(hex: "#E8F1F8")
     static let luminaAccentBlue = Color(hex: "#306FF1")
     static let luminaAccentPurple = Color(hex: "#BDB2FF")
-    static let luminaSeedBule = Color(hex: "#2B6CEE")
+    static let luminaSeedBlue = Color(hex: "#2B6CEE")
     
     // UI Elements
     static let luminaPrimaryAction = Color(hex: "#1A1A1A")
@@ -21,7 +21,7 @@ extension Color {
     
     static let luminaMutedSlate = Color(hex: "#64748B")
     static let luminaDarkNavy = Color(hex: "#0F172A")
-    static let luminaLighSlate = Color(hex: "#94A3B8")
+    static let luminaLightSlate = Color(hex: "#94A3B8")
     
     static let brandBlueColor = Color(hex: "#2563EB")
     
@@ -32,7 +32,7 @@ extension Color {
     static let wellnessTagBackgroundColor = Color(hex: "ECFDF5")
     
     static let personalTagTextColor = Color(hex: "#475569")
-    static let persolanTagBackgroundColor = Color(hex: "#F1F5F9")
+    static let personalTagBackgroundColor = Color(hex: "#F1F5F9")
     
     static let selectedDateTextColor = Color(hex: "#FFFFFF")
     
@@ -49,7 +49,7 @@ extension Color {
     static let createTaskFocus = Color(hex: "#306FF1")
 
     /// Details placeholder — mevcut muted slate ile aynı ama semantic isim
-    static let createTaskPlaceholder = Color(hex: "#94A3B8") // = luminaLighSlate
+    static let createTaskPlaceholder = Color(hex: "#94A3B8") // = luminaLightSlate
 
     /// Chip: Today
     static let chipTodayBackground = Color(hex: "#E8F1F8") // = softBlue

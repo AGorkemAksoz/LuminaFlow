@@ -65,7 +65,7 @@ extension LuminaTypography {
     /// Day label unselected ("Mon") — Inter Medium 12px / #94A3B8
     static let dayLabel = LuminaTypography(
         font: LuminaFont.dayLabelFont(),
-        color: .luminaLighSlate,
+        color: .luminaLightSlate,
         lineSpacing: 2.4
     )
 
@@ -132,7 +132,7 @@ extension LuminaTypography {
     /// Time metadata ("10:00 AM") — Inter Medium 12px / #94A3B8 / Uppercase
     static let timeMetadata = LuminaTypography(
         font: LuminaFont.timeMetadataFont(),
-        color: .luminaLighSlate,
+        color: .luminaLightSlate,
         lineSpacing: 2.4,
         textCase: .uppercase
     )
@@ -152,7 +152,7 @@ extension LuminaTypography {
     /// Nav label unselected — Inter Medium 10px / #94A3B8
     static let navLabelInactive = LuminaTypography(
         font: LuminaFont.navLabelFont(),
-        color: .luminaLighSlate,
+        color: .luminaLightSlate,
         lineSpacing: 2.0
     )
 

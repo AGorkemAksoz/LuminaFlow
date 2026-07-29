@@ -104,8 +104,8 @@ struct DashboardCalendarViewCell: View {
     let date: Int
     var isSelectedDay: Bool
 
-    let gradient = Gradient(colors: [Color.luminaSeedBule,
-                                       Color.luminaSeedBule.opacity(0.8)])
+    let gradient = Gradient(colors: [Color.luminaSeedBlue,
+                                       Color.luminaSeedBlue.opacity(0.8)])
 
     var body: some View {
         VStack(spacing: LuminaSpacing.s) {

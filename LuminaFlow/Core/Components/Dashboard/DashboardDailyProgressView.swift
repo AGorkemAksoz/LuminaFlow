@@ -37,7 +37,7 @@ struct DashboardDailyProgressView: View {
 
 struct ThickProgressStyle: ProgressViewStyle {
     var height: CGFloat = 20.0
-    var color: Color = .luminaSeedBule
+    var color: Color = .luminaSeedBlue
 
     func makeBody(configuration: Configuration) -> some View {
         let progress = configuration.fractionCompleted ?? 0
