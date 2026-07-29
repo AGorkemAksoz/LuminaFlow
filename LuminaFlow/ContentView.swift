@@ -12,12 +12,39 @@ struct ContentView: View {
         ZStack {
             Color.luminaBackground
                 .edgesIgnoringSafeArea(.all)
-            VStack(spacing: LuminaSpacing.l) {
+            VStack(alignment: .leading, spacing: LuminaSpacing.xs) {
                 DashboardViewNavigationBar()
                 DashboardCalendarView()
+                DashboardDailyProgressView()
+                DashboardTitleView()
+                DashboardTaskList()
                 Spacer()
+                HStack {
+                    Spacer()
+                    Button {
+                        print("Add a new task")
+                    } label: {
+                        Image(systemName: "plus")
+                            .resizable()
+                            .frame(width: 20, height: 20)
+                            .padding()
+                            .foregroundStyle(Color.white)
+                            .background(Color.luminaAccentBlue)
+                            .clipShape(Circle())
+
+                    }
+
+                }
+                .padding([.trailing, .bottom])
             }
-            
+            .onAppear {
+                for family in UIFont.familyNames.sorted() {
+                    print("Family: \(family)")
+                    for name in UIFont.fontNames(forFamilyName: family) {
+                        print("   PostScript: \(name)")
+                    }
+                }
+            }
         }
     }
 }

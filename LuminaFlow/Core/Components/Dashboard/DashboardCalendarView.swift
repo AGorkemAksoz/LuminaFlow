@@ -28,7 +28,7 @@ struct DashboardCalendarView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(weekTitle(for: weekDays))
-                .luminaStyle(.subheading)
+                .luminaStyle(.monthYear)
                 .bold()
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -36,7 +36,9 @@ struct DashboardCalendarView: View {
                     ForEach(weekDays, id: \.self) { day in
                         let dayStart = calendar.startOfDay(for: day)
                         Button {
-                            selectedDate = dayStart
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.82)) {
+                                selectedDate = dayStart
+                            }
                         } label: {
                             DashboardCalendarViewCell(
                                 day: Self.weekdayFormatter.string(from: day).uppercased(),
@@ -45,9 +47,10 @@ struct DashboardCalendarView: View {
                             )
                         }
                         .buttonStyle(.plain)
+                        .shadow(radius: calendar.isDate(day, inSameDayAs: selectedDate) ? 8 : 0 )
                     }
                 }
-                .padding(.horizontal)
+                .padding(.vertical)
             }
         }
         .padding(.horizontal)
@@ -101,25 +104,26 @@ struct DashboardCalendarViewCell: View {
     let date: Int
     var isSelectedDay: Bool
 
-    let gradient = Gradient(colors: [Color.luminaAccentBlue,
-                                       Color.luminaAccentBlue.opacity(0.3)])
+    let gradient = Gradient(colors: [Color.luminaSeedBule,
+                                       Color.luminaSeedBule.opacity(0.8)])
 
     var body: some View {
         VStack(spacing: LuminaSpacing.s) {
             Text(day)
-                .luminaStyle(.smallCaps)
+                .luminaStyle(isSelectedDay ? .dayLabelSelected : .dayLabel)
             Text(String(date))
-                .luminaStyle(.headline)
+                .luminaStyle(isSelectedDay ? .dateNumberSelected : .dateNumber)
             if isSelectedDay {
                 Image(systemName: "circle.fill")
                     .resizable()
                     .frame(width: 6, height: 6)
+                    .foregroundStyle(Color.white)
             }
         }
         .padding()
         .background(
             isSelectedDay
-                ? AnyShapeStyle(LinearGradient(gradient: gradient, startPoint: .bottomLeading, endPoint: .topTrailing))
+            ? AnyShapeStyle(LinearGradient(gradient: gradient, startPoint: .bottomLeading, endPoint: .topTrailing))
             : AnyShapeStyle(Color.white)
         )
         .clipShape(.rect(cornerRadius: 16))

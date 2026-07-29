@@ -4,10 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Inter_18pt-Light.ttf</string>
-		<string>Inter_24pt-Regular.ttf</string>
-		<string>Inter_24pt-SemiBold.ttf</string>
-		<string>Inter_28pt-Bold.ttf</string>
+		<string>Inter-VariableFont_opsz,wght.ttf</string>
 	</array>
 </dict>
 </plist>

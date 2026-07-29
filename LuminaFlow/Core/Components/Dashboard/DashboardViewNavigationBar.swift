@@ -11,7 +11,7 @@ struct DashboardViewNavigationBar: View {
     var body: some View {
         HStack(alignment: .center) {
             imageView
-            VStack(alignment: .leading, spacing: LuminaSpacing.s) {
+            VStack(alignment: .leading, spacing: LuminaSpacing.xs) {
                 greetingLabel
                 userNameLabel
             }
@@ -36,12 +36,12 @@ extension DashboardViewNavigationBar {
     
     private var greetingLabel: some View {
         Text("GOOD MORNING")
-            .luminaStyle(.smallCaps)
+            .luminaStyle(.welcomeMessage)
     }
     
     private var userNameLabel: some View {
         Text("Alex Johnson")
-            .luminaStyle(.subheading).bold()
+            .luminaStyle(.userName)
     }
     
     private var notificationIcon: some View {
