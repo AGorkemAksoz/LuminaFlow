@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		DD728697301E44390062CF7F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD135A5D2F6883C900C52540 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD135A642F6883C900C52540;
+			remoteInfo = LuminaFlow;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		DD135A652F6883C900C52540 /* LuminaFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LuminaFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD728693301E44390062CF7F /* LuminaFlowTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LuminaFlowTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -29,10 +40,22 @@
 			path = LuminaFlow;
 			sourceTree = "<group>";
 		};
+		DD728694301E44390062CF7F /* LuminaFlowTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LuminaFlowTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		DD135A622F6883C900C52540 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD728690301E44390062CF7F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				DD135A672F6883C900C52540 /* LuminaFlow */,
+				DD728694301E44390062CF7F /* LuminaFlowTests */,
 				DD135A662F6883C900C52540 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				DD135A652F6883C900C52540 /* LuminaFlow.app */,
+				DD728693301E44390062CF7F /* LuminaFlowTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,6 +108,29 @@
 			productReference = DD135A652F6883C900C52540 /* LuminaFlow.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DD728692301E44390062CF7F /* LuminaFlowTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD728699301E44390062CF7F /* Build configuration list for PBXNativeTarget "LuminaFlowTests" */;
+			buildPhases = (
+				DD72868F301E44390062CF7F /* Sources */,
+				DD728690301E44390062CF7F /* Frameworks */,
+				DD728691301E44390062CF7F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD728698301E44390062CF7F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				DD728694301E44390062CF7F /* LuminaFlowTests */,
+			);
+			name = LuminaFlowTests;
+			packageProductDependencies = (
+			);
+			productName = LuminaFlowTests;
+			productReference = DD728693301E44390062CF7F /* LuminaFlowTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -95,6 +143,10 @@
 				TargetAttributes = {
 					DD135A642F6883C900C52540 = {
 						CreatedOnToolsVersion = 16.1;
+					};
+					DD728692301E44390062CF7F = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = DD135A642F6883C900C52540;
 					};
 				};
 			};
@@ -113,12 +165,20 @@
 			projectRoot = "";
 			targets = (
 				DD135A642F6883C900C52540 /* LuminaFlow */,
+				DD728692301E44390062CF7F /* LuminaFlowTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DD135A632F6883C900C52540 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD728691301E44390062CF7F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +195,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD72868F301E44390062CF7F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD728698301E44390062CF7F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD135A642F6883C900C52540 /* LuminaFlow */;
+			targetProxy = DD728697301E44390062CF7F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DD135A712F6883CA00C52540 /* Debug */ = {
@@ -274,7 +349,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -305,7 +380,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,6 +391,44 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DD72869A301E44390062CF7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DC2CCCCLGJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aligorkemaksoz.LuminaFlowTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LuminaFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LuminaFlow";
+			};
+			name = Debug;
+		};
+		DD72869B301E44390062CF7F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DC2CCCCLGJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.aligorkemaksoz.LuminaFlowTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LuminaFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LuminaFlow";
 			};
 			name = Release;
 		};
@@ -336,6 +449,15 @@
 			buildConfigurations = (
 				DD135A742F6883CA00C52540 /* Debug */,
 				DD135A752F6883CA00C52540 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD728699301E44390062CF7F /* Build configuration list for PBXNativeTarget "LuminaFlowTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD72869A301E44390062CF7F /* Debug */,
+				DD72869B301E44390062CF7F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

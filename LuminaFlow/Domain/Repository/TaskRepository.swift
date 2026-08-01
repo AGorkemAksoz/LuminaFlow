@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RepositoryError: Error {
+enum RepositoryError: Error, Equatable {
     case duplicate(UUID)
     case notFound(UUID)
 }
