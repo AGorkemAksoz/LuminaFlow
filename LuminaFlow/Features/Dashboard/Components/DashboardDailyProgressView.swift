@@ -8,18 +8,22 @@
 import SwiftUI
 
 struct DashboardDailyProgressView: View {
+    
+    let progressText: String
+    let progress: Double
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 6) {
                 Text("Daily Progress")
                     .luminaStyle(.progressHeadline)
-                Text("4 of 7 tasks completed")
+                Text(progressText)
                     .luminaStyle(.progressState)
             }
             
             Spacer()
             
-            ProgressView(value: 0.55)
+            ProgressView(value: progress)
                 .frame(width: 90)
                 .progressViewStyle(ThickProgressStyle(height: 10))
         }
@@ -32,7 +36,8 @@ struct DashboardDailyProgressView: View {
 }
 
 #Preview {
-    DashboardDailyProgressView()
+    DashboardDailyProgressView(progressText: "4 of 7 tasks completed",
+                               progress: 0.55)
 }
 
 struct ThickProgressStyle: ProgressViewStyle {

@@ -56,8 +56,8 @@ extension Color {
     static let chipTodayForeground = Color(hex: "#2563EB") // = brandBlue
 
     /// Chip: Priority
-    static let chipPriorityBackground = Color(hex: "#EDE9FE") // soft violet
-    static let chipPriorityForeground = Color(hex: "#7C3AED") // = strategyTagText
+    static let chipPriorityBackground = Color(hex: "#EEF2FF") // soft violet
+    static let chipPriorityForeground = Color(hex: "#4338CA") // = strategyTagText
 
     /// Chip: Reminders
     static let chipReminderBackground = Color(hex: "#EDE9FE")

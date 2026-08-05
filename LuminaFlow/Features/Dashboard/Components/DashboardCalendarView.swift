@@ -8,16 +8,10 @@
 import SwiftUI
 
 struct DashboardCalendarView: View {
-    @State private var selectedDate: Date = DashboardCalendarView.calendar.startOfDay(for: Date())
-
-    private static var calendar: Calendar {
-        var cal = Calendar.autoupdatingCurrent
-        cal.firstWeekday = 2 // Monday-first to match Mon–Sun strip
-        return cal
-    }
-
-    private var calendar: Calendar { Self.calendar }
-
+    
+    @Binding var selectedDate: Date
+    var calendar: Calendar
+        
     private var weekDays: [Date] {
         guard
             let weekStart = calendar.dateInterval(of: .weekOfYear, for: selectedDate)?.start
@@ -96,7 +90,8 @@ struct DashboardCalendarView: View {
 }
 
 #Preview {
-    DashboardCalendarView()
+    DashboardCalendarView(selectedDate: .constant(Date()),
+                          calendar: .autoupdatingCurrent)
 }
 
 struct DashboardCalendarViewCell: View {

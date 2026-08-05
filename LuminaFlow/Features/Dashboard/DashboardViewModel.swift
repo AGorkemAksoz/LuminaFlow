@@ -12,15 +12,23 @@ final class DashboardViewModel: ObservableObject {
     
     //UI Listeners (Should be update on MainActor)
     @Published private(set) var tasks: [TaskItem] = []
+    @Published private(set) var errorMessage: String? = nil
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
-    
-    // Async Actor repository dependency
-    private let repository: TaskRepository
-    private let calendar: Calendar
     
     // User's selected date
     @Published var selectedDate: Date
+    
+    // Async Actor repository dependency
+    private let repository: TaskRepository
+    let calendar: Calendar
+    
+    init(repository: TaskRepository,
+         calendar: Calendar = .autoupdatingCurrent,
+         initialDate: Date = Date()) {
+        self.repository = repository
+        self.calendar = calendar
+        self.selectedDate = calendar.startOfDay(for: initialDate)
+    }
     
     // Computed Properties
     var progress: Double {
@@ -36,14 +44,6 @@ final class DashboardViewModel: ObservableObject {
         return "\(finisedTasks) of \(totalTasks) tasks completed"
     }
     
-    init(repository: TaskRepository,
-         calendar: Calendar = .autoupdatingCurrent,
-         initialDate: Date = Date()) {
-        self.repository = repository
-        self.calendar = calendar
-        self.selectedDate = calendar.startOfDay(for: initialDate)
-    }
-    
     func loadTasks(for date: Date) async {
         do {
             isLoading = true
@@ -56,5 +56,14 @@ final class DashboardViewModel: ObservableObject {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+    
+    // Alert functions
+    func clearError() {
+        errorMessage = nil
+    }
+
+    func retry() async {
+        await loadTasks(for: selectedDate)
     }
 }

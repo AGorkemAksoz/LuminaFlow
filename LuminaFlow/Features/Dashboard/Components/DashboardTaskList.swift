@@ -9,29 +9,33 @@ import SwiftUI
 
 struct DashboardTaskList: View {
     
-    let tasks: [TaskItem] = [TaskItem(title: "Testing",
-                              description: "1 million, 2 million",
-                              dueDate: Date.now,
-                              isFinished: true),
-                         TaskItem(title: "Deneme",
-                              description: "1 milyon, 2 milyon",
-                              dueDate: Date.init(timeIntervalSince1970: 1781913600),
-                              isFinished: false)
-    ]
+    let tasks: [TaskItem]
+    let isSpinning: Bool
     
     var body: some View {
-        List(tasks) { task in
-            DashboardTaskCellView(selectedTask: task)
-                .listRowInsets(EdgeInsets())
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+        ZStack {
+            if isSpinning {
+                ProgressView()
+                    .frame(width: 150, height: 150)
+            } else {
+                List(tasks) { task in
+                    DashboardTaskCellView(selectedTask: task)
+                        .listRowInsets(EdgeInsets())
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .frame(maxHeight: .infinity)
+            }
         }
-        .listStyle(.plain)
-        .scrollContentBackground(.hidden)
-        .frame(maxHeight: .infinity)
     }
 }
 
 #Preview {
-    DashboardTaskList()
+    let dummyTask = TaskItem(title: "Testing",
+                             description: "Testing attenion please",
+                             dueDate: Date(),
+                             isFinished: false)
+    DashboardTaskList(tasks: [dummyTask], isSpinning: false)
 }
