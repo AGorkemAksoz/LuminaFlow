@@ -13,4 +13,12 @@ struct TaskItem: Identifiable {
     let description: String?
     let dueDate: Date?
     let isFinished: Bool
+    
+    func togglingFinished() -> TaskItem {
+        return TaskItem(id: self.id,
+                        title: self.title,
+                        description: self.description,
+                        dueDate: self.dueDate,
+                        isFinished: !self.isFinished)
+    }
 }

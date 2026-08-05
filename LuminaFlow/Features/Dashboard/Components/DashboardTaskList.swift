@@ -11,6 +11,7 @@ struct DashboardTaskList: View {
     
     let tasks: [TaskItem]
     let isSpinning: Bool
+    let onToggleTask: (TaskItem) -> Void
     
     var body: some View {
         ZStack {
@@ -19,7 +20,7 @@ struct DashboardTaskList: View {
                     .frame(width: 150, height: 150)
             } else {
                 List(tasks) { task in
-                    DashboardTaskCellView(selectedTask: task)
+                    DashboardTaskCellView(selectedTask: task, onToggleTask: onToggleTask)
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
@@ -37,5 +38,5 @@ struct DashboardTaskList: View {
                              description: "Testing attenion please",
                              dueDate: Date(),
                              isFinished: false)
-    DashboardTaskList(tasks: [dummyTask], isSpinning: false)
+    DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in })
 }

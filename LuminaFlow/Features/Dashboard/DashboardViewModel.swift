@@ -58,6 +58,22 @@ final class DashboardViewModel: ObservableObject {
         }
     }
     
+    func toggleFinished(_ task: TaskItem) async {
+        do {
+            let updated = task.togglingFinished()
+            try await repository.update(updated)
+            
+            guard let index = tasks.firstIndex(where: { $0.id == updated.id}) else {
+                return
+            }
+            
+            tasks[index] = updated
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+    
     // Alert functions
     func clearError() {
         errorMessage = nil

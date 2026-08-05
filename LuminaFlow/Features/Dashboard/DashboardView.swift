@@ -35,7 +35,9 @@ struct DashboardView: View {
                 DashboardDailyProgressView(progressText: viewModel.progressText,
                                            progress: viewModel.progress)
                 DashboardTitleView()
-                DashboardTaskList(tasks: viewModel.tasks, isSpinning: viewModel.isLoading)
+                DashboardTaskList(tasks: viewModel.tasks, isSpinning: viewModel.isLoading, onToggleTask: { task in
+                    Task { await viewModel.toggleFinished(task) }
+                })
                 Spacer()
                 HStack {
                     Spacer()

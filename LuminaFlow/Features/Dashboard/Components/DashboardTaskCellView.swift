@@ -10,16 +10,33 @@ import SwiftUI
 struct DashboardTaskCellView: View {
     let selectedTask: TaskItem
     
+    let onToggleTask: (TaskItem) -> Void
+    
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: "circle")
-                .resizable()
-                .frame(width: 24, height: 24)
-                .foregroundStyle(.gray)
+            Button {
+                onToggleTask(selectedTask)
+            } label: {
+                if selectedTask.isFinished {
+                    Image(systemName: "checkmark.circle")
+                        .resizable()
+                        .foregroundStyle(.white)
+                        .background(Color.luminaSeedBlue)
+                        .clipShape(Circle())
+                        .frame(width: 36, height: 36)
+                } else {
+                    Image(systemName: "circle")
+                        .resizable()
+                        .frame(width: 36, height: 36)
+                        .foregroundStyle(.gray)
+                }
+            }
+
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(selectedTask.title)
                     .luminaStyle(.taskTitle)
+                    .strikethrough(selectedTask.isFinished)
                 HStack {
                     Image(systemName: "clock.fill")
                         .resizable()
