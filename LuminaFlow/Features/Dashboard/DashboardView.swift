@@ -14,7 +14,6 @@ struct DashboardView: View {
     @StateObject private var viewModel: DashboardViewModel
     
     @State private var createTaskViewModel: CreateTaskViewModel?
-    @State private var showCreateTaskSheet: Bool = false
     
     init(
         viewModel: @autoclosure @escaping () -> DashboardViewModel,

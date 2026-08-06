@@ -12,7 +12,7 @@ struct CreateTaskSheet: View {
     
     @Environment(\.dismiss) var dismiss
     
-    
+    @State private var isPresentingDatePicker = false
     init(viewModel: CreateTaskViewModel) {
         self.viewModel = viewModel
     }
@@ -37,6 +37,11 @@ struct CreateTaskSheet: View {
             }
             Button("OK", role: .cancel) { }
         } message: { Text(viewModel.errorMessage ?? "") }
+            .sheet(isPresented: $isPresentingDatePicker) {
+                DatePicker("Select a date",
+                           selection: $viewModel.dueDate,
+                           displayedComponents: .date)
+            }
     }
 }
 
@@ -79,7 +84,12 @@ extension CreateTaskSheet {
         HStack {
             VStack {
                 HStack {
-                    makeChipLabel(for: .date)
+                    Button {
+                        isPresentingDatePicker = true
+                    } label: {
+                        makeChipLabel(for: .date(label: viewModel.dueDateChipTitle))
+                    }
+
                     makeChipLabel(for: .priority)
                 }
                 HStack {

@@ -30,6 +30,22 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     
     var onTaskCreated: (() -> Void)?
     
+    var dueDateChipTitle: String {
+        let today = calendar.startOfDay(for: Date())
+        let dueDay = calendar.startOfDay(for: dueDate)
+        
+        if calendar.isDate(dueDay, inSameDayAs: today) {
+            return "Today"
+        }
+        
+        if let tomorrow = calendar.date(byAdding: .day, value: 1, to: today),
+           calendar.isDate(dueDay, inSameDayAs: tomorrow){
+            return "Tomorrow"
+        }
+        
+        return dueDay.formatted(date: .numeric, time: .shortened)
+    }
+    
     func save() async {
         do {
             let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
