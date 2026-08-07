@@ -37,6 +37,7 @@ struct DashboardTaskList: View {
     let dummyTask = TaskItem(title: "Testing",
                              description: "Testing attenion please",
                              dueDate: Date(),
-                             isFinished: false)
+                             isFinished: false,
+                             priority: .medium)
     DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in })
 }

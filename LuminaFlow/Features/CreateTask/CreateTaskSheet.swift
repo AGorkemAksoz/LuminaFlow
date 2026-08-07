@@ -13,6 +13,7 @@ struct CreateTaskSheet: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var isPresentingDatePicker = false
+    @State private var isPresentingPriorityPicker = false
     init(viewModel: CreateTaskViewModel) {
         self.viewModel = viewModel
     }
@@ -37,11 +38,15 @@ struct CreateTaskSheet: View {
             }
             Button("OK", role: .cancel) { }
         } message: { Text(viewModel.errorMessage ?? "") }
-            .sheet(isPresented: $isPresentingDatePicker) {
-                DatePicker("Select a date",
-                           selection: $viewModel.dueDate,
-                           displayedComponents: .date)
-            }
+        .sheet(isPresented: $isPresentingDatePicker) {
+            DatePicker("Select a date",
+                       selection: $viewModel.dueDate,
+                       displayedComponents: .date)
+        }
+        .sheet(isPresented: $isPresentingPriorityPicker) {
+            PriorityPickView(isSelected: $viewModel.priority)
+                .presentationDetents([.large])
+        }
     }
 }
 
@@ -90,7 +95,12 @@ extension CreateTaskSheet {
                         makeChipLabel(for: .date(label: viewModel.dueDateChipTitle))
                     }
 
-                    makeChipLabel(for: .priority)
+                    Button {
+                        isPresentingPriorityPicker = true
+                    } label: {
+                        makeChipLabel(for: .priority(label: viewModel.priority.title))
+                    }
+
                 }
                 HStack {
                     makeChipLabel(for: .reminder)
@@ -113,7 +123,7 @@ extension CreateTaskSheet {
                     .frame(height: 40)
             }
             .background(Color.saveTaskBackground)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .padding(.horizontal, 10)
             .padding(.bottom)
             .disabled(viewModel.isSaving)

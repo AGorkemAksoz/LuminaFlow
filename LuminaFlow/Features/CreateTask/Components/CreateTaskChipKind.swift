@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum CreateTaskChipKind {
-    case date(label: String), priority, reminder, inbox
+    case date(label: String), priority(label: String), reminder, inbox
     
     var template: CreateTaskChipTemplate {
         switch self {
@@ -17,9 +17,9 @@ enum CreateTaskChipKind {
                                     title: label,
                                     backgroundColor: .chipTodayBackground,
                                     typography: .createTaskDateChipLabel)
-        case .priority:
+        case .priority(let label):
             CreateTaskChipTemplate(imageName: "flag",
-                                    title: "Priority",
+                                   title: label,
                                     backgroundColor: .chipPriorityBackground,
                                     typography: .createTaskPriorityChipLabel)
             

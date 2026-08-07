@@ -73,7 +73,7 @@ extension Color {
     static let subtaskMuted = Color(hex: "#94A3B8")
 
     /// Primary CTA
-    static let saveTaskBackground = Color(hex: "#4F6EF7") // blue-violet, mock’taki Save
+    static let saveTaskBackground = Color(hex: "#1E1BBD") // blue-violet, mock’taki Save
     static let saveTaskForeground = Color(hex: "#FFFFFF")
     static let saveTaskShadow = Color(hex: "#4F6EF7").opacity(0.35)
 }

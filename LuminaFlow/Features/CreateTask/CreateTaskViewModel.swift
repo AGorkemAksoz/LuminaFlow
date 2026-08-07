@@ -12,6 +12,7 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     @Published var title: String = ""
     @Published var description: String = ""
     @Published var dueDate: Date = Date()
+    @Published var priority: TaskPriority = .medium
     @Published private(set) var isSaving: Bool = false
     @Published private(set) var errorMessage: String? = nil
     
@@ -59,7 +60,11 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
             isSaving = true
             defer { isSaving = false}
             
-            let taskItem = TaskItem(title: trimmedTitle, description: description.isEmpty ? nil : description, dueDate: dueDate, isFinished: false)
+            let taskItem = TaskItem(title: trimmedTitle,
+                                    description: description.isEmpty ? nil : description,
+                                    dueDate: dueDate,
+                                    isFinished: false,
+                                    priority: priority)
             
             try await repository.add(taskItem)
             errorMessage = nil
