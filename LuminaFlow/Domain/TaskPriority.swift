@@ -7,8 +7,11 @@
 
 import Foundation
 
-enum TaskPriority: CaseIterable {
-    case urgent, high, medium, low
+enum TaskPriority: String, CaseIterable, Codable {
+    case urgent = "urgent"
+    case high = "high"
+    case medium = "medium"
+    case low = "low"
     
     var title: String {
         switch self {

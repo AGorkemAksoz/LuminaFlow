@@ -88,7 +88,7 @@ struct DashboardView: View {
 }
 
 #Preview {
-    let container = DependencyContainer()
+    let container = DependencyContainer(persistenceController: .preview)
     
     DashboardView(
         viewModel: container.makeDashboardViewModel(),

@@ -51,7 +51,7 @@ struct CreateTaskSheet: View {
 }
 
 #Preview {
-    let container = DependencyContainer()
+    let container = DependencyContainer(persistenceController: .preview)
     CreateTaskSheet(viewModel: container.makeCreateTaskViewModel())
 }
 

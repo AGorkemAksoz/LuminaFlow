@@ -11,12 +11,17 @@ import Foundation
 final class DependencyContainer {
     let calendar: Calendar
     let taskRepository: TaskRepository
+    let persistenceController: PersistenceController
     
-    init(calendar: Calendar = .autoupdatingCurrent) {
+    init(persistenceController: PersistenceController,  calendar: Calendar = .autoupdatingCurrent) {
         var cal = calendar
         cal.firstWeekday = 2 // Monday-first week strip
         self.calendar = cal
-        self.taskRepository = InMemoryTaskRepository(calendar: cal)
+        self.persistenceController = persistenceController
+        self.taskRepository = CoreDataTaskRepository(
+            persistenceController: persistenceController,
+            calendar: cal
+        )
     }
     
     func makeDashboardViewModel() -> DashboardViewModel {
