@@ -14,6 +14,7 @@ struct CreateTaskSheet: View {
     
     @State private var isPresentingDatePicker = false
     @State private var isPresentingPriorityPicker = false
+    @State private var isPresentingReminderSheet = false
     init(viewModel: CreateTaskViewModel) {
         self.viewModel = viewModel
     }
@@ -46,6 +47,12 @@ struct CreateTaskSheet: View {
         .sheet(isPresented: $isPresentingPriorityPicker) {
             PriorityPickView(isSelected: $viewModel.priority)
                 .presentationDetents([.large])
+        }
+        .sheet(isPresented: $isPresentingReminderSheet) {
+            ReminderPickSheet(selectedDate: $viewModel.reminderDate,
+                              calendar: viewModel.calendar,
+                              baseDate: Date())
+            .presentationDetents([.height(300)])
         }
     }
 }
@@ -103,7 +110,12 @@ extension CreateTaskSheet {
 
                 }
                 HStack {
-                    makeChipLabel(for: .reminder)
+                    Button {
+                        isPresentingReminderSheet = true
+                    } label: {
+                        makeChipLabel(for: .reminder(label: viewModel.reminderChipTitle))
+                    }
+
                     makeChipLabel(for: .inbox)
                 }
             }

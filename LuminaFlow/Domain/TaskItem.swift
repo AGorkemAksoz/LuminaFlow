@@ -12,6 +12,7 @@ struct TaskItem: Identifiable {
     let title: String
     let description: String?
     let dueDate: Date?
+    let reminder: Date?
     let isFinished: Bool
     let priority: TaskPriority
     
@@ -20,6 +21,7 @@ struct TaskItem: Identifiable {
                         title: self.title,
                         description: self.description,
                         dueDate: self.dueDate,
+                        reminder: self.reminder,
                         isFinished: !self.isFinished,
                         priority: self.priority)
     }

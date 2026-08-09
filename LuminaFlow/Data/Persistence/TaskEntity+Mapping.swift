@@ -46,6 +46,7 @@ extension TaskEntity {
             title: title,
             description: self.taskDescription,
             dueDate: self.dueDate,
+            reminder: self.reminderDate,
             isFinished: self.isFinished,
             priority: priority)
 
@@ -57,6 +58,7 @@ extension TaskEntity {
         self.title = item.title
         self.taskDescription = item.description
         self.dueDate = item.dueDate
+        self.reminderDate = item.reminder
         self.isFinished = item.isFinished
         self.priority = item.priority.rawValue
     }

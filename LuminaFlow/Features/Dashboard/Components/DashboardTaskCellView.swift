@@ -36,16 +36,18 @@ struct DashboardTaskCellView: View {
                 Text(selectedTask.title)
                     .luminaStyle(.taskTitle)
                     .strikethrough(selectedTask.isFinished)
-                HStack {
-                    Image(systemName: "clock.fill")
-                        .resizable()
-                        .frame(width: 18, height: 18)
-                    Text(selectedTask.dueDate?.formatter() ?? "13:30")
-                    Image(systemName: "circle")
-                        .resizable()
-                        .frame(width: 8, height: 8)
+                if let reminder = selectedTask.reminder {
+                    HStack {
+                        Image(systemName: "bell.fill")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                        Text(reminder.formatted(date: .omitted, time: .shortened))
+                        Image(systemName: "circle")
+                            .resizable()
+                            .frame(width: 8, height: 8)
+                    }
+                    .luminaStyle(.timeMetadata)
                 }
-                .luminaStyle(.timeMetadata)
             }
             Spacer()
         }
@@ -62,15 +64,3 @@ struct DashboardTaskCellView: View {
 //#Preview {
 //    DashboardTaskCellView()
 //}
-
-
-extension Date {
-    func formatter() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm" // 24 saat formatı -> 19:23
-        // formatter.dateFormat = "hh:mm" // 12 saat formatı -> 07:23
-        formatter.timeZone = TimeZone.current // istersen belirli bir zaman dilimi verebilirsin
-        
-        return formatter.string(from: self)
-    }
-}

@@ -13,6 +13,7 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     @Published var description: String = ""
     @Published var dueDate: Date = Date()
     @Published var priority: TaskPriority = .medium
+    @Published var reminderDate: Date? = nil
     @Published private(set) var isSaving: Bool = false
     @Published private(set) var errorMessage: String? = nil
     
@@ -47,6 +48,12 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
         return dueDay.formatted(date: .numeric, time: .shortened)
     }
     
+    var reminderChipTitle: String {
+        guard let reminderDate else { return "Reminder" }
+        return reminderDate.formatted(date: .omitted, time: .shortened)
+        // örn. "03:30" veya locale’e göre "3:30 AM"
+    }
+    
     func save() async {
         do {
             let trimmedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -63,6 +70,7 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
             let taskItem = TaskItem(title: trimmedTitle,
                                     description: description.isEmpty ? nil : description,
                                     dueDate: dueDate,
+                                    reminder: reminderDate,
                                     isFinished: false,
                                     priority: priority)
             
