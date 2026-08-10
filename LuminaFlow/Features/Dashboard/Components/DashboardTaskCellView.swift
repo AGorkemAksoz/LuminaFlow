@@ -31,6 +31,7 @@ struct DashboardTaskCellView: View {
                         .foregroundStyle(.gray)
                 }
             }
+            .buttonStyle(.plain)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(selectedTask.title)

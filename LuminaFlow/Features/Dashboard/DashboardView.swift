@@ -24,7 +24,7 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottomTrailing) {
             Color.luminaBackground
                 .edgesIgnoringSafeArea(.all)
             VStack(alignment: .leading, spacing: LuminaSpacing.xs) {
@@ -37,30 +37,29 @@ struct DashboardView: View {
                 DashboardTaskList(tasks: viewModel.tasks, isSpinning: viewModel.isLoading, onToggleTask: { task in
                     Task { await viewModel.toggleFinished(task) }
                 })
-                Spacer()
-                HStack {
-                    Spacer()
-                    Button {
-                        let vm = makeCreateTaskVM(viewModel.selectedDate)
-                        vm.onTaskCreated = { [weak viewModel] in
-                            createTaskViewModel = nil
-                            Task { await viewModel?.loadTasks(for: viewModel?.selectedDate ?? Date())}
-                        }
-                        createTaskViewModel = vm
-                    } label: {
-                        Image(systemName: "plus")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .padding()
-                            .foregroundStyle(Color.white)
-                            .background(Color.luminaAccentBlue)
-                            .clipShape(Circle())
-
-                    }
-
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    Color.clear.frame(height: 72) // FAB yüksekliği + margin
                 }
-                .padding([.trailing, .bottom])
             }
+            
+            Button {
+                let vm = makeCreateTaskVM(viewModel.selectedDate)
+                vm.onTaskCreated = { [weak viewModel] in
+                    createTaskViewModel = nil
+                    Task { await viewModel?.loadTasks(for: viewModel?.selectedDate ?? Date())}
+                }
+                createTaskViewModel = vm
+            } label: {
+                Image(systemName: "plus")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .padding()
+                    .foregroundStyle(Color.white)
+                    .background(Color.luminaAccentBlue)
+                    .clipShape(Circle())
+
+            }
+            .padding([.trailing, .bottom])
             .task(id: viewModel.selectedDate) {
                 await viewModel.loadTasks(for: viewModel.selectedDate)
             }
