@@ -19,14 +19,17 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     
     // Async Actor repository dependency
     private let repository: TaskRepository
+    private let reminderScheduler: ReminderScheduler
     let calendar: Calendar
     let id = UUID()
     
     init(repository: TaskRepository,
          calendar: Calendar = .autoupdatingCurrent,
+         reminderScheduler: ReminderScheduler,
          initialDueDate: Date = Date()) {
         self.repository = repository
         self.calendar = calendar
+        self.reminderScheduler = reminderScheduler
         self.dueDate = calendar.startOfDay(for: initialDueDate)
     }
     
@@ -75,6 +78,17 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
                                     priority: priority)
             
             try await repository.add(taskItem)
+            
+            if taskItem.reminder != nil {
+                let allowed = await reminderScheduler.requestAuthorization()
+                if allowed {
+                    do {
+                        try await reminderScheduler.schedule(for: taskItem)
+                    } catch {
+                        // soft: log / isteğe bağlı ayrı mesaj
+                    }
+                }
+            }
             errorMessage = nil
             
             onTaskCreated?()

@@ -11,6 +11,7 @@ import Foundation
 final class DependencyContainer {
     let calendar: Calendar
     let taskRepository: TaskRepository
+    let reminderScheduler: ReminderScheduler
     let persistenceController: PersistenceController
     
     init(persistenceController: PersistenceController,  calendar: Calendar = .autoupdatingCurrent) {
@@ -22,16 +23,19 @@ final class DependencyContainer {
             persistenceController: persistenceController,
             calendar: cal
         )
+        self.reminderScheduler = UserNotificationsReminderScheduler(calendar: cal)
     }
     
     func makeDashboardViewModel() -> DashboardViewModel {
         return DashboardViewModel(repository: taskRepository,
-                                  calendar: calendar)
+                                  calendar: calendar,
+                                  reminderScheduler: reminderScheduler)
     }
     
     func makeCreateTaskViewModel(initialDueDate: Date = Date()) -> CreateTaskViewModel {
         return CreateTaskViewModel(repository: taskRepository,
                                    calendar: calendar,
+                                   reminderScheduler: reminderScheduler,
                                    initialDueDate: initialDueDate)
     }
 }

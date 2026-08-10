@@ -15,12 +15,15 @@ struct DashboardViewModelTests {
     @Test
     func loadTasks_success_populatesTasks_andClearsError() async {
         // ARRANGE
-        let task1 = TaskItem(title: "Do task 1", description: nil, dueDate: nil, isFinished: false)
-        let task2 = TaskItem(title: "Do task 2", description: nil, dueDate: nil, isFinished: true)
+        let task1 = TaskItem(title: "Do task 1", description: nil, dueDate: nil, reminder: .now, isFinished: false, priority: .medium)
+        let task2 = TaskItem(title: "Do task 2", description: nil, dueDate: nil, reminder: .now, isFinished: true, priority: .medium)
         let mockTasks = [task1, task2]
         
         let repository = MockTaskRepository(tasksToReturn: mockTasks)
-        let sut = DashboardViewModel(repository: repository)
+        let sut = DashboardViewModel(
+            repository: repository,
+            reminderScheduler: NoOpReminderScheduler()
+        )
         
         // ACT
         await sut.loadTasks(for: sut.selectedDate)
@@ -38,7 +41,10 @@ struct DashboardViewModelTests {
         // ARRANGE
         let randomID = UUID()
         let repository = MockTaskRepository(errorToThrow: RepositoryError.notFound(randomID))
-        let sut = DashboardViewModel(repository: repository)
+        let sut = DashboardViewModel(
+            repository: repository,
+            reminderScheduler: NoOpReminderScheduler()
+        )
         
         // ACT
         await sut.loadTasks(for: sut.selectedDate)
@@ -54,14 +60,17 @@ struct DashboardViewModelTests {
     func progress_and_progressText_calculateCorrectly() async {
         //ARRANGE
         let tasks = [
-            TaskItem(title: "Task 1", description: nil, dueDate: nil, isFinished: true),
-            TaskItem(title: "Task 2", description: nil, dueDate: nil, isFinished: false),
-            TaskItem(title: "Task 3", description: nil, dueDate: nil, isFinished: false),
-            TaskItem(title: "Task 4", description: nil, dueDate: nil, isFinished: false)
+            TaskItem(title: "Task 1", description: nil, dueDate: nil, reminder: .now, isFinished: true, priority: .medium),
+            TaskItem(title: "Task 2", description: nil, dueDate: nil, reminder: .now, isFinished: false, priority: .medium),
+            TaskItem(title: "Task 3", description: nil, dueDate: nil, reminder: .now, isFinished: false, priority: .medium),
+            TaskItem(title: "Task 4", description: nil, dueDate: nil, reminder: .now, isFinished: false, priority: .medium)
         ]
         
         let repository = MockTaskRepository(tasksToReturn: tasks)
-        let sut = DashboardViewModel(repository: repository)
+        let sut = DashboardViewModel(
+            repository: repository,
+            reminderScheduler: NoOpReminderScheduler()
+        )
         
         //ACT
         await sut.loadTasks(for: sut.selectedDate)

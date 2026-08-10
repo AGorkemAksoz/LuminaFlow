@@ -20,13 +20,16 @@ final class DashboardViewModel: ObservableObject {
     
     // Async Actor repository dependency
     private let repository: TaskRepository
+    private let reminderScheduler: ReminderScheduler
     let calendar: Calendar
     
     init(repository: TaskRepository,
          calendar: Calendar = .autoupdatingCurrent,
+         reminderScheduler: ReminderScheduler,
          initialDate: Date = Date()) {
         self.repository = repository
         self.calendar = calendar
+        self.reminderScheduler = reminderScheduler
         self.selectedDate = calendar.startOfDay(for: initialDate)
     }
     
@@ -62,6 +65,14 @@ final class DashboardViewModel: ObservableObject {
         do {
             let updated = task.togglingFinished()
             try await repository.update(updated)
+            
+            do {
+                try await reminderScheduler.schedule(for: updated)
+            } catch {
+                #if DEBUG
+                print("Reminder schedule failed: \(error)")
+                #endif
+            }
             
             guard let index = tasks.firstIndex(where: { $0.id == updated.id}) else {
                 return
