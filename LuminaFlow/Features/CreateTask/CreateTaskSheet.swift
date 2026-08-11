@@ -40,9 +40,16 @@ struct CreateTaskSheet: View {
             Button("OK", role: .cancel) { }
         } message: { Text(viewModel.errorMessage ?? "") }
         .sheet(isPresented: $isPresentingDatePicker) {
-            DatePicker("Select a date",
-                       selection: $viewModel.dueDate,
-                       displayedComponents: .date)
+//            DatePicker("Select a date",
+//                       selection: $viewModel.dueDate,
+//                       displayedComponents: .date)
+            
+            TaskDatePickerView(calendar: .autoupdatingCurrent,
+                               initialDate: viewModel.dueDate) { date in
+                if let date {
+                    viewModel.dueDate = viewModel.calendar.startOfDay(for: date)
+                }
+            }
         }
         .sheet(isPresented: $isPresentingPriorityPicker) {
             PriorityPickView(isSelected: $viewModel.priority)
