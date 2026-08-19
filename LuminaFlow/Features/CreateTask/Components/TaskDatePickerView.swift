@@ -155,7 +155,6 @@ extension TaskDatePickerView {
                    .clipShape(Capsule())
            }
        }
-    
 }
 
 extension TaskDatePickerView {
@@ -311,8 +310,6 @@ extension TaskDatePickerView {
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: selectedDate)
         return calendar.date(from: dateComponents)
     }
-
-
 }
 
 #Preview {

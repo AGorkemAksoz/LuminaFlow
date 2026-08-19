@@ -14,6 +14,7 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     @Published var dueDate: Date = Date()
     @Published var priority: TaskPriority = .medium
     @Published var reminderDate: Date? = nil
+    @Published var taskTag: TaskTag? = nil
     @Published private(set) var isSaving: Bool = false
     @Published private(set) var errorMessage: String? = nil
     
@@ -75,7 +76,8 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
                                     dueDate: dueDate,
                                     reminder: reminderDate,
                                     isFinished: false,
-                                    priority: priority)
+                                    priority: priority,
+                                    tag: .education)
             
             try await repository.add(taskItem)
             

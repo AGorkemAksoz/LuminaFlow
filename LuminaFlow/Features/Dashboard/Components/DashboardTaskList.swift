@@ -39,6 +39,7 @@ struct DashboardTaskList: View {
                              dueDate: Date(),
                              reminder: nil,
                              isFinished: false,
-                             priority: .medium)
+                             priority: .medium,
+                             tag: .education)
     DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in })
 }

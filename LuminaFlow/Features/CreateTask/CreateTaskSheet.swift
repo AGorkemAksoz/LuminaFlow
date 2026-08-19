@@ -15,6 +15,8 @@ struct CreateTaskSheet: View {
     @State private var isPresentingDatePicker = false
     @State private var isPresentingPriorityPicker = false
     @State private var isPresentingReminderSheet = false
+    @State private var isPresentingTagSheet = false
+    
     init(viewModel: CreateTaskViewModel) {
         self.viewModel = viewModel
     }
@@ -39,12 +41,8 @@ struct CreateTaskSheet: View {
             }
             Button("OK", role: .cancel) { }
         } message: { Text(viewModel.errorMessage ?? "") }
-        .sheet(isPresented: $isPresentingDatePicker) {
-//            DatePicker("Select a date",
-//                       selection: $viewModel.dueDate,
-//                       displayedComponents: .date)
-            
-            TaskDatePickerView(calendar: .autoupdatingCurrent,
+        .sheet(isPresented: $isPresentingDatePicker) {            
+            TaskDatePickerView(calendar: viewModel.calendar,
                                initialDate: viewModel.dueDate) { date in
                 if let date {
                     viewModel.dueDate = viewModel.calendar.startOfDay(for: date)
@@ -60,6 +58,10 @@ struct CreateTaskSheet: View {
                               calendar: viewModel.calendar,
                               baseDate: Date())
             .presentationDetents([.height(300)])
+        }
+        .sheet(isPresented: $isPresentingTagSheet) {
+            TaskTagPickerView(selectedTag: $viewModel.taskTag)
+                .presentationDetents([.medium])
         }
     }
 }
@@ -116,14 +118,19 @@ extension CreateTaskSheet {
                     }
 
                 }
+                
                 HStack {
                     Button {
                         isPresentingReminderSheet = true
                     } label: {
                         makeChipLabel(for: .reminder(label: viewModel.reminderChipTitle))
                     }
-
-                    makeChipLabel(for: .inbox)
+                    
+                    Button {
+                        isPresentingTagSheet = true
+                    } label: {
+                        makeChipLabel(for: .tag(label: viewModel.taskTag?.title ?? "Tag"))
+                    }
                 }
             }
             .padding()

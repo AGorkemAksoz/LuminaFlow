@@ -15,6 +15,7 @@ struct TaskItem: Identifiable {
     let reminder: Date?
     let isFinished: Bool
     let priority: TaskPriority
+    let tag: TaskTag?
     
     func togglingFinished() -> TaskItem {
         return TaskItem(id: self.id,
@@ -23,6 +24,7 @@ struct TaskItem: Identifiable {
                         dueDate: self.dueDate,
                         reminder: self.reminder,
                         isFinished: !self.isFinished,
-                        priority: self.priority)
+                        priority: self.priority,
+                        tag: self.tag)
     }
 }

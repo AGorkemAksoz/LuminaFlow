@@ -12,6 +12,7 @@ enum TaskMappingError: LocalizedError {
     case missingID
     case missingTitle
     case invalidPriority(String)
+    case invalidTag(String)
     
     var errorDescription: String? {
         switch self {
@@ -21,6 +22,8 @@ enum TaskMappingError: LocalizedError {
             return "Task entity'sinde başlık bulunamadı."
         case .invalidPriority(let rawValue):
             return "Geçersiz priority değeri: \(rawValue)"
+        case .invalidTag(let rawValue):
+            return "Geçersiz tag değeri: \(rawValue)"
         }
     }
 }
@@ -41,6 +44,17 @@ extension TaskEntity {
             throw TaskMappingError.invalidPriority(self.priority ?? "nil")
         }
         
+        let tag: TaskTag?
+        
+        if let raw = self.tag {
+            guard let parsed = TaskTag(rawValue: raw) else {
+                throw TaskMappingError.invalidTag(raw)
+            }
+            tag = parsed
+        } else {
+            tag = nil
+        }
+        
         return TaskItem(
             id: id,
             title: title,
@@ -48,8 +62,8 @@ extension TaskEntity {
             dueDate: self.dueDate,
             reminder: self.reminderDate,
             isFinished: self.isFinished,
-            priority: priority)
-
+            priority: priority,
+            tag: tag)
     }
     
     /// TaskItem -> mevcut entity'ye yaz
@@ -61,6 +75,7 @@ extension TaskEntity {
         self.reminderDate = item.reminder
         self.isFinished = item.isFinished
         self.priority = item.priority.rawValue
+        self.tag = item.tag?.rawValue
     }
 }
 
