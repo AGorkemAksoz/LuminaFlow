@@ -16,4 +16,5 @@ protocol TaskRepository: Sendable {
     func fetchTasks(for date: Date) async throws -> [TaskItem]
     func add(_ taskItem: TaskItem) async throws
     func update(_ taskItem: TaskItem) async throws
+    func delete(_ id: UUID) async throws
 }

@@ -64,6 +64,16 @@ actor CoreDataTaskRepository: TaskRepository {
         }
     }
     
+    func delete(_ id: UUID) async throws {
+        try await context.perform {
+            guard let existing = try self.fetchEntity(id: id, in: self.context) else {
+                throw RepositoryError.notFound(id)
+            }
+            
+            self.context.delete(existing)
+            try self.context.save()
+        }
+    }
     
     // MARK: - Private helpers
     

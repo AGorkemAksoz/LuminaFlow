@@ -93,4 +93,15 @@ final class DashboardViewModel: ObservableObject {
     func retry() async {
         await loadTasks(for: selectedDate)
     }
+    
+    func deleteTask(_ task: TaskItem) async {
+        do {
+            try await repository.delete(task.id)
+            tasks.removeAll(where: { $0.id == task.id })
+            await reminderScheduler.cancel(for: task.id)
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
 }

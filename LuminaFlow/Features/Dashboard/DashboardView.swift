@@ -36,6 +36,8 @@ struct DashboardView: View {
                 DashboardTitleView()
                 DashboardTaskList(tasks: viewModel.tasks, isSpinning: viewModel.isLoading, onToggleTask: { task in
                     Task { await viewModel.toggleFinished(task) }
+                }, onDelete: { task in
+                    Task { await viewModel.deleteTask(task)}
                 })
                 .safeAreaInset(edge: .bottom, spacing: 0) {
                     Color.clear.frame(height: 72) // FAB yüksekliği + margin

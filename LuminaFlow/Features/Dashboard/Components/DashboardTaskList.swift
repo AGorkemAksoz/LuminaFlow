@@ -12,6 +12,7 @@ struct DashboardTaskList: View {
     let tasks: [TaskItem]
     let isSpinning: Bool
     let onToggleTask: (TaskItem) -> Void
+    let onDelete: (TaskItem) -> Void
     
     var body: some View {
         ZStack {
@@ -24,6 +25,16 @@ struct DashboardTaskList: View {
                         .listRowInsets(EdgeInsets())
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
+                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                            Button(role: .destructive) {
+                                onDelete(task)
+                            } label: {
+                                HStack {
+                                    Image(systemName: "trash")
+                                    Text("Delete")
+                                }
+                            }
+                        }
                 }
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
@@ -41,5 +52,5 @@ struct DashboardTaskList: View {
                              isFinished: false,
                              priority: .medium,
                              tag: .education)
-    DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in })
+    DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in }, onDelete: {_ in })
 }

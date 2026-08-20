@@ -24,4 +24,5 @@ actor MockTaskRepository: TaskRepository {
     }
     func add(_ taskItem: TaskItem) async throws {}     // VM testinde kullanılmıyor
     func update(_ taskItem: TaskItem) async throws {}  // şimdilik boş bırak
+    func delete(_ id: UUID) async throws { }
 }

@@ -44,4 +44,13 @@ actor InMemoryTaskRepository: TaskRepository {
         }
         tasks[i] = taskItem
     }
+    
+    func delete(_ id: UUID) async throws {
+        guard let i = tasks.firstIndex(where: {$0.id == id}) else {
+            throw RepositoryError.notFound(id)
+        }
+        
+        tasks.remove(at: i)
+    }
+  
 }
