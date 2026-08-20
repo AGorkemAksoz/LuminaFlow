@@ -77,7 +77,7 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
                                     reminder: reminderDate,
                                     isFinished: false,
                                     priority: priority,
-                                    tag: .education)
+                                    tag: taskTag)
             
             try await repository.add(taskItem)
             
