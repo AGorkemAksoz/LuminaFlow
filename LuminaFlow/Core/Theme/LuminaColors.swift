@@ -9,7 +9,7 @@ import SwiftUI
 
 extension Color {
     // Design System - Color Palette
-    static let luminaBackground = Color(hex: "#FAFAFA")
+    static let luminaBackground = Color(hex: "F8FAFC")
     static let luminaSoftBlue = Color(hex: "#E8F1F8")
     static let luminaAccentBlue = Color(hex: "#306FF1")
     static let luminaAccentPurple = Color(hex: "#BDB2FF")
@@ -76,4 +76,25 @@ extension Color {
     static let saveTaskBackground = Color(hex: "#1E1BBD") // blue-violet, mock’taki Save
     static let saveTaskForeground = Color(hex: "#FFFFFF")
     static let saveTaskShadow = Color(hex: "#4F6EF7").opacity(0.35)
+    
+    /// Task Detail
+    static let surface           = Color(hex: "FFFFFF") // Kart arka planı
+    static let ctaGradientStart  = Color(hex: "3B82F6")
+    static let ctaGradientEnd    = Color(hex: "2563EB")
+    static let ctaShadow         = Color(hex: "2563EB").opacity(0.28)
+
+    static let textPrimary   = Color(hex: "0F172A") // Slate-900
+    static let textSecondary = Color(hex: "334155") // Slate-700
+    static let textMuted     = Color(hex: "94A3B8") // Slate-400 (section label + completed)
+
+    static let chipBackground = Color(hex: "EFF6FF") // Blue-50
+    static let chipForeground = Color(hex: "2563EB") // Blue-600
+
+    static let checkboxBorder        = Color(hex: "CBD5E1") // Slate-300
+    static let checkboxFillChecked   = Color(hex: "3B82F6") // Blue-500
+
+    static let cardBorder  = Color(hex: "E2E8F0").opacity(0.6)
+    
+    static let cardShadowSoft   = Color.black.opacity(0.02)
+    static let cardShadowStrong = Color.black.opacity(0.03)
 }

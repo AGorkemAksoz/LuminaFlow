@@ -83,4 +83,30 @@ struct LuminaFont {
     static func chipLabelFont() -> Font { .custom(InterFont.semiBold.rawValue, size: 14) }
     static func subtaskLabelFont() -> Font { .custom(InterFont.medium.rawValue, size: 14) }
     static func saveTaskLabelFont() -> Font { .custom(InterFont.bold.rawValue, size: 17) }
+    
+    // MARK: - Task Detail
+
+    static func detailTitleFont() -> Font {
+        .custom(InterFont.bold.rawValue, size: 32)
+    }
+
+    static func detailChipLabelFont() -> Font {
+        .custom(InterFont.semiBold.rawValue, size: 12)
+    }
+
+    static func detailSectionLabelFont() -> Font {
+        .custom(InterFont.semiBold.rawValue, size: 12)
+    }
+
+    static func detailNotesFont() -> Font {
+        .custom(InterFont.regular.rawValue, size: 15)
+    }
+
+    static func detailSubtaskFont() -> Font {
+        .custom(InterFont.medium.rawValue, size: 15)
+    }
+
+    static func detailCompleteButtonFont() -> Font {
+        .custom(InterFont.semiBold.rawValue, size: 16)
+    }
 }

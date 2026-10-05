@@ -11,6 +11,7 @@ struct DashboardTaskCellView: View {
     let selectedTask: TaskItem
     
     let onToggleTask: (TaskItem) -> Void
+    let onSelect: (TaskItem) -> Void
     
     var body: some View {
         HStack(spacing: 12) {
@@ -46,6 +47,9 @@ struct DashboardTaskCellView: View {
                         priorityTag
                     }
                 }
+            }
+            .onTapGesture {
+                onSelect(selectedTask)
             }
             Spacer()
         }

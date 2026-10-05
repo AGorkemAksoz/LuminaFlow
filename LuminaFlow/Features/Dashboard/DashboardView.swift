@@ -14,6 +14,7 @@ struct DashboardView: View {
     @StateObject private var viewModel: DashboardViewModel
     
     @State private var createTaskViewModel: CreateTaskViewModel?
+    @State private var path: [TaskItem] = []
     
     init(
         viewModel: @autoclosure @escaping () -> DashboardViewModel,
@@ -24,65 +25,81 @@ struct DashboardView: View {
     }
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color.luminaBackground
-                .edgesIgnoringSafeArea(.all)
-            VStack(alignment: .leading, spacing: LuminaSpacing.xs) {
-                DashboardViewNavigationBar()
-                DashboardCalendarView(selectedDate: $viewModel.selectedDate,
-                                      calendar: viewModel.calendar)
-                DashboardDailyProgressView(progressText: viewModel.progressText,
-                                           progress: viewModel.progress)
-                DashboardTitleView()
-                DashboardTaskList(tasks: viewModel.tasks, isSpinning: viewModel.isLoading, onToggleTask: { task in
-                    Task { await viewModel.toggleFinished(task) }
-                }, onDelete: { task in
-                    Task { await viewModel.deleteTask(task)}
-                })
-                .safeAreaInset(edge: .bottom, spacing: 0) {
-                    Color.clear.frame(height: 72) // FAB yüksekliği + margin
-                }
-            }
-            
-            Button {
-                let vm = makeCreateTaskVM(viewModel.selectedDate)
-                vm.onTaskCreated = { [weak viewModel] in
-                    createTaskViewModel = nil
-                    Task { await viewModel?.loadTasks(for: viewModel?.selectedDate ?? Date())}
-                }
-                createTaskViewModel = vm
-            } label: {
-                Image(systemName: "plus")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .padding()
-                    .foregroundStyle(Color.white)
-                    .background(Color.luminaAccentBlue)
-                    .clipShape(Circle())
-
-            }
-            .padding([.trailing, .bottom])
-            .task(id: viewModel.selectedDate) {
-                await viewModel.loadTasks(for: viewModel.selectedDate)
-            }
-            .alert(
-                "Couldn't load tasks",
-                isPresented: Binding(
-                    get: { viewModel.errorMessage != nil },
-                    set: { if !$0 { viewModel.clearError() } }
-                ),
-                actions: {
-                    Button("Try Again") {
-                        Task { await viewModel.retry() }
+        NavigationStack(path: $path) {
+            ZStack(alignment: .bottomTrailing) {
+                Color.luminaBackground
+                    .edgesIgnoringSafeArea(.all)
+                VStack(alignment: .leading, spacing: LuminaSpacing.xs) {
+                    DashboardViewNavigationBar()
+                    DashboardCalendarView(selectedDate: $viewModel.selectedDate,
+                                          calendar: viewModel.calendar)
+                    DashboardDailyProgressView(progressText: viewModel.progressText,
+                                               progress: viewModel.progress)
+                    DashboardTitleView()
+                    DashboardTaskList(tasks: viewModel.tasks, isSpinning: viewModel.isLoading, onToggleTask: { task in
+                        Task { await viewModel.toggleFinished(task) }
+                    }, onDelete: { task in
+                        Task { await viewModel.deleteTask(task)}
+                    }, onSelect: { path.append($0)})
+                    .safeAreaInset(edge: .bottom, spacing: 0) {
+                        Color.clear.frame(height: 72) // FAB yüksekliği + margin
                     }
-                    Button("OK", role: .cancel) { }
-                },
-                message: {
-                    Text(viewModel.errorMessage ?? "")
                 }
-            )
-            .sheet(item: $createTaskViewModel) { vm in
-                CreateTaskSheet(viewModel: vm)
+                
+                Button {
+                    let vm = makeCreateTaskVM(viewModel.selectedDate)
+                    vm.onTaskCreated = { [weak viewModel] in
+                        createTaskViewModel = nil
+                        Task { await viewModel?.loadTasks(for: viewModel?.selectedDate ?? Date())}
+                    }
+                    createTaskViewModel = vm
+                } label: {
+                    Image(systemName: "plus")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .padding()
+                        .foregroundStyle(Color.white)
+                        .background(Color.luminaAccentBlue)
+                        .clipShape(Circle())
+
+                }
+                .padding([.trailing, .bottom])
+                .task(id: viewModel.selectedDate) {
+                    await viewModel.loadTasks(for: viewModel.selectedDate)
+                }
+                .alert(
+                    "Couldn't load tasks",
+                    isPresented: Binding(
+                        get: { viewModel.errorMessage != nil },
+                        set: { if !$0 { viewModel.clearError() } }
+                    ),
+                    actions: {
+                        Button("Try Again") {
+                            Task { await viewModel.retry() }
+                        }
+                        Button("OK", role: .cancel) { }
+                    },
+                    message: {
+                        Text(viewModel.errorMessage ?? "")
+                    }
+                )
+                .sheet(item: $createTaskViewModel) { vm in
+                    CreateTaskSheet(viewModel: vm)
+                }
+            }
+            .navigationDestination(for: TaskItem.self) { task in
+                TaskDetailView(title: task.title,
+                               dueLabel: task.dueDate.map {
+                                   TaskDateFormatting.dueLabel(for: $0, calendar: viewModel.calendar)
+                               },
+                               tagLabel: task.tag?.title,
+                               notes: task.description, onComplete:  {
+                    Task { await viewModel.toggleFinished(task)}
+                    path.removeAll()
+                }, onDelete: {
+                    Task { await viewModel.deleteTask(task)}
+                    path.removeAll()
+                })
             }
         }
     }

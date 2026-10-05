@@ -194,6 +194,54 @@ extension LuminaTypography {
     static let createTaskSaveButton = LuminaTypography(
         font: LuminaFont.saveTaskLabelFont(),
         color: .saveTaskForeground)
+    
+    // MARK: - Task Detail
+
+    /// Detail title — Inter Bold 32 / #0F172A / kerning: -0.025em
+    static let detailTitle = LuminaTypography(
+        font: LuminaFont.detailTitleFont(),
+        color: .luminaDarkNavy,
+        lineSpacing: 4,
+        kerning: -0.8
+    )
+
+    /// Due / tag chip — Inter SemiBold 12 / brand blue / Uppercase
+    static let detailChipLabel = LuminaTypography(
+        font: LuminaFont.detailChipLabelFont(),
+        color: .chipTodayForeground,
+        kerning: 0.24,
+        textCase: .uppercase
+    )
+
+    /// "NOTES", "SUB-TASKS" — Inter SemiBold 12 / #94A3B8 / Uppercase
+    static let detailSectionLabel = LuminaTypography(
+        font: LuminaFont.detailSectionLabelFont(),
+        color: .luminaLightSlate,
+        kerning: 0.96,
+        textCase: .uppercase
+    )
+
+    /// Notes body — Inter Regular 15 / muted slate
+    static let detailNotes = LuminaTypography(
+        font: LuminaFont.detailNotesFont(),
+        color: .luminaMutedSlate,
+        lineSpacing: 7.5
+    )
+
+    /// Subtask row title — Inter Medium 15 / #0F172A
+    static let detailSubtask = LuminaTypography(
+        font: LuminaFont.detailSubtaskFont(),
+        color: .luminaDarkNavy,
+        lineSpacing: 4.5,
+        kerning: -0.15
+    )
+
+    /// Complete Task CTA — Inter SemiBold 16 / white
+    static let detailCompleteButton = LuminaTypography(
+        font: LuminaFont.detailCompleteButtonFont(),
+        color: .saveTaskForeground,
+        kerning: -0.16
+    )
 }
 
 // MARK: - ViewModifier
