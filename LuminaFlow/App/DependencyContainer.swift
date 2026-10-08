@@ -38,4 +38,11 @@ final class DependencyContainer {
                                    reminderScheduler: reminderScheduler,
                                    initialDueDate: initialDueDate)
     }
+    
+    func makeEditTaskViewModel(for task: TaskItem) -> EditTaskViewModel {
+        return EditTaskViewModel(task: task,
+                                 repository: taskRepository,
+                                 reminderScheduler: reminderScheduler,
+                                 calendar: calendar)
+    }
 }

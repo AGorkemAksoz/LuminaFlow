@@ -13,6 +13,7 @@ struct DashboardTaskList: View {
     let isSpinning: Bool
     let onToggleTask: (TaskItem) -> Void
     let onDelete: (TaskItem) -> Void
+    let onEdit: (TaskItem) -> Void
     let onSelect: (TaskItem) -> Void
     
     var body: some View {
@@ -27,6 +28,11 @@ struct DashboardTaskList: View {
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                          
+                            Button("Edit") {
+                                onEdit(task)
+                            }
+                          
                             Button(role: .destructive) {
                                 onDelete(task)
                             } label: {
@@ -53,5 +59,5 @@ struct DashboardTaskList: View {
                              isFinished: false,
                              priority: .medium,
                              tag: .education)
-    DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in }, onDelete: {_ in }, onSelect: {_ in})
+    DashboardTaskList(tasks: [dummyTask], isSpinning: false, onToggleTask: {_ in }, onDelete: {_ in }, onEdit: {_ in }, onSelect: {_ in})
 }

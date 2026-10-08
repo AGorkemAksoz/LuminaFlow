@@ -10,18 +10,22 @@ import SwiftUI
 struct DashboardView: View {
     
     private let makeCreateTaskVM: (Date) -> CreateTaskViewModel
+    private let makeEditTaskVM: (TaskItem) -> EditTaskViewModel
     
     @StateObject private var viewModel: DashboardViewModel
     
     @State private var createTaskViewModel: CreateTaskViewModel?
+    @State private var editTaskViewModel: EditTaskViewModel?
     @State private var path: [TaskItem] = []
     
     init(
         viewModel: @autoclosure @escaping () -> DashboardViewModel,
-        makeCreateTaskViewModel: @escaping (Date) -> CreateTaskViewModel
+        makeCreateTaskViewModel: @escaping (Date) -> CreateTaskViewModel,
+        makeEditTaskViewModel: @escaping (TaskItem) -> EditTaskViewModel
     ) {
         _viewModel = StateObject(wrappedValue: viewModel())
         self.makeCreateTaskVM = makeCreateTaskViewModel
+        self.makeEditTaskVM = makeEditTaskViewModel
     }
     
     var body: some View {
@@ -40,6 +44,8 @@ struct DashboardView: View {
                         Task { await viewModel.toggleFinished(task) }
                     }, onDelete: { task in
                         Task { await viewModel.deleteTask(task)}
+                    }, onEdit: { task in
+                        presentEdit(for: task)
                     }, onSelect: { path.append($0)})
                     .safeAreaInset(edge: .bottom, spacing: 0) {
                         Color.clear.frame(height: 72) // FAB yüksekliği + margin
@@ -86,6 +92,9 @@ struct DashboardView: View {
                 .sheet(item: $createTaskViewModel) { vm in
                     CreateTaskSheet(viewModel: vm)
                 }
+                .sheet(item: $editTaskViewModel) { vm in
+                    EditTaskSheet(viewModel: vm)
+                }
             }
             .navigationDestination(for: TaskItem.self) { task in
                 TaskDetailView(title: task.title,
@@ -99,9 +108,24 @@ struct DashboardView: View {
                 }, onDelete: {
                     Task { await viewModel.deleteTask(task)}
                     path.removeAll()
+                }, onEdit: {
+                    presentEdit(for: task)
                 })
             }
         }
+    }
+}
+
+// MARK: - Edit Flow
+extension DashboardView {
+    private func presentEdit(for task: TaskItem) {
+        let vm = makeEditTaskVM(task)
+        vm.onTaskUpdated = { [weak viewModel] in
+            editTaskViewModel = nil
+            path.removeAll()
+            Task { await viewModel?.loadTasks(for: viewModel?.selectedDate ?? Date())}
+        }
+        editTaskViewModel = vm
     }
 }
 
@@ -112,8 +136,8 @@ struct DashboardView: View {
         viewModel: container.makeDashboardViewModel(),
         makeCreateTaskViewModel: { date in
             container.makeCreateTaskViewModel(initialDueDate: date)
+        }, makeEditTaskViewModel: { task in
+            container.makeEditTaskViewModel(for: task)
         }
     )
-
 }
-

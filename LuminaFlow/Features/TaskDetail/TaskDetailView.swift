@@ -33,10 +33,11 @@ struct TaskDetailView: View {
     let notes: String?
 
     @State private var subtasks: [TaskSubtask]
+    @State private var isShowActionMenu: Bool = false
     @State private var isConfirmingDelete: Bool = false
 
     var onComplete: (() -> Void)?
-    var onMore: (() -> Void)?
+    var onEdit: (() -> Void)?
     var onDelete: (() -> Void)?
 
     init(
@@ -47,7 +48,7 @@ struct TaskDetailView: View {
         subtasks: [TaskSubtask] = [],
         onComplete: (() -> Void)? = nil,
         onDelete: (() -> Void)? = nil,
-        onMore: (() -> Void)? = nil
+        onEdit: (() -> Void)? = nil
     ) {
         self.title = title
         self.dueLabel = dueLabel
@@ -56,7 +57,7 @@ struct TaskDetailView: View {
         _subtasks = State(initialValue: subtasks)
         self.onComplete = onComplete
         self.onDelete = onDelete
-        self.onMore = onMore
+        self.onEdit = onEdit
     }
 
     var body: some View {
@@ -79,10 +80,24 @@ struct TaskDetailView: View {
                 .padding(.horizontal, LuminaSpacing.screenHorizontalPadding)
                 .padding(.bottom, 16)
         }
-        .confirmationDialog("Delete this task?", isPresented: $isConfirmingDelete, titleVisibility: .visible) {
+        .confirmationDialog("Select Action", isPresented: $isShowActionMenu, titleVisibility: .visible) {
+            
+            Button("Edit") {
+                onEdit?()
+            }
+
+            Button("Delete", role: .destructive) {
+                isConfirmingDelete = true
+            }
+
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("What would you like to do with this task?")
+        }
+        .confirmationDialog("Do you really want to delete this task?", isPresented: $isConfirmingDelete, actions: {
             Button("Delete", role: .destructive) { onDelete?() }
             Button("Cancel", role: .cancel) { }
-        }
+        })
         .navigationBarBackButtonHidden()
     }
 
@@ -101,7 +116,7 @@ struct TaskDetailView: View {
             Spacer()
 
             Button {
-                isConfirmingDelete = true
+                isShowActionMenu = true
             } label: {
                 Image(systemName: "ellipsis")
                     .font(.system(size: 17, weight: .semibold))

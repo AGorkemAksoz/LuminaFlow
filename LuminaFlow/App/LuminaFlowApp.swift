@@ -26,9 +26,10 @@ struct LuminaFlowApp: App {
                 viewModel: container.makeDashboardViewModel(),
                 makeCreateTaskViewModel: { date in
                     container.makeCreateTaskViewModel(initialDueDate: date)
+                }, makeEditTaskViewModel: { task in
+                    container.makeEditTaskViewModel(for: task)
                 }
             )
-
         }
     }
 }
