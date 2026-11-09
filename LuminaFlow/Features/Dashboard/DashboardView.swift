@@ -44,8 +44,7 @@ struct DashboardView: View {
                         Task { await viewModel.toggleFinished(task) }
                     }, onDelete: { task in
                         Task { await viewModel.deleteTask(task)}
-                    }, onEdit: { task in
-                        presentEdit(for: task)
+                    }, onEdit: { presentEdit(for: $0)
                     }, onSelect: { path.append($0)})
                     .safeAreaInset(edge: .bottom, spacing: 0) {
                         Color.clear.frame(height: 72) // FAB yüksekliği + margin
@@ -123,7 +122,9 @@ struct DashboardView: View {
 // MARK: - Edit Flow
 extension DashboardView {
     private func presentEdit(for task: TaskItem) {
-        let vm = makeEditTaskVM(task)
+        let fresh = viewModel.tasks.first(where: { $0.id == task.id }) ?? task
+
+        let vm = makeEditTaskVM(fresh)
         vm.onTaskUpdated = { [weak viewModel] in
             editTaskViewModel = nil
             path.removeAll()

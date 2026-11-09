@@ -71,7 +71,8 @@ final class EditTaskViewModel: ObservableObject, Identifiable {
                                   reminder: reminderDate,
                                   isFinished: original.isFinished,
                                   priority: priority,
-                                  tag: taskTag)
+                                   tag: taskTag,
+                                   subtasks: original.subtasks)
         
         do {
             try await repository.update(updatedTask)
