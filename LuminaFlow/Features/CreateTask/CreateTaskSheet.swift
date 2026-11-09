@@ -16,6 +16,7 @@ struct CreateTaskSheet: View {
     @State private var isPresentingPriorityPicker = false
     @State private var isPresentingReminderSheet = false
     @State private var isPresentingTagSheet = false
+    @State private var isPresentingAddSubtasksSheet = false
     
     init(viewModel: CreateTaskViewModel) {
         self.viewModel = viewModel
@@ -28,6 +29,8 @@ struct CreateTaskSheet: View {
             titleAndDescriptionTextField
             
             taskChipsGridView
+            
+            addSubtaskPlaceHolder
             
             Spacer()
             
@@ -62,6 +65,9 @@ struct CreateTaskSheet: View {
         .sheet(isPresented: $isPresentingTagSheet) {
             TaskTagPickerView(selectedTag: $viewModel.taskTag)
                 .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $isPresentingAddSubtasksSheet) {
+            AddSubtasksSheet(viewModel: viewModel)
         }
     }
 }
@@ -155,6 +161,36 @@ extension CreateTaskSheet {
             .disabled(viewModel.isSaving)
         }
     }
+    
+    private var addSubtaskPlaceHolder: some View {
+        Button(action: { isPresentingAddSubtasksSheet = true }) {
+            VStack(spacing: 10) {
+                Image(systemName: "plus.circle")
+                    .font(.system(size: 26, weight: .light))
+                    .foregroundStyle(Color.addSubtaskPlaceholderIcon)
+
+                Text("Add Subtasks")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Color.addSubtaskPlaceholderLabel)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 122)
+            .background(
+                Color.addSubtaskPlaceholderFill,
+                in: RoundedRectangle(cornerRadius: 20, style: .continuous)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(
+                        Color.addSubtaskPlaceholderDashedBorder,
+                        style: StrokeStyle(lineWidth: 1.5, dash: [6, 5])
+                    )
+            )
+            .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+        .buttonStyle(PressableScaleStyle())
+        .padding(.horizontal)
+    }
 }
 
 // MARK: - Viewbuilder Functions
@@ -170,5 +206,15 @@ extension CreateTaskSheet {
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .luminaStyle(chipLabelCase.template.typography)
 
+    }
+}
+
+/// Basınca hafifçe küçülen hafif bir geri bildirim stili.
+private struct PressableScaleStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .opacity(configuration.isPressed ? 0.85 : 1)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }

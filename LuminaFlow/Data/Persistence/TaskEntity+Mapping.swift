@@ -55,6 +55,21 @@ extension TaskEntity {
             tag = nil
         }
         
+        /// 1) NSSet -> [SubtaskEntity]
+        /// 2) order'a göre artan sırala
+        /// 3) domain'e çevir
+        let childEntities = (self.subtasks as? Set<SubtaskEntity>) ?? []
+        let subtasks: [SubtaskItem] = childEntities
+            .sorted { $0.order < $1.order}
+            .compactMap { child in
+                do {
+                    return try child.toDomain()
+                } catch {
+                    print("Subtask mapping hatası:", error.localizedDescription)
+                    return nil
+                }
+            }
+        
         return TaskItem(
             id: id,
             title: title,
@@ -63,7 +78,8 @@ extension TaskEntity {
             reminder: self.reminderDate,
             isFinished: self.isFinished,
             priority: priority,
-            tag: tag)
+            tag: tag,
+            subtasks: subtasks)
     }
     
     /// TaskItem -> mevcut entity'ye yaz
@@ -76,6 +92,41 @@ extension TaskEntity {
         self.isFinished = item.isFinished
         self.priority = item.priority.rawValue
         self.tag = item.tag?.rawValue
+        
+        guard let context = self.managedObjectContext else { return }
+        
+        let existing = (self.subtasks as? Set<SubtaskEntity>) ?? []
+        existing.forEach { context.delete($0)}
+        
+        for (index, subtask) in item.subtasks.enumerated() {
+            let child = SubtaskEntity(context: context)
+            child.update(from: subtask, order: index, parent: self)
+        }
+    }
+}
+
+// MARK: - SubtaskEntity <-> SubtaskItem
+extension SubtaskEntity {
+    func toDomain() throws -> SubtaskItem {
+        guard let id = self.id else {
+            throw TaskMappingError.missingID
+        }
+        
+        guard let title = self.title else {
+            throw TaskMappingError.missingTitle
+        }
+        
+        return SubtaskItem(id: id,
+                           title: title,
+                           isCompleted: self.isCompleted)
+    }
+    
+    func update(from item: SubtaskItem, order: Int, parent: TaskEntity) {
+        self.id = item.id
+        self.title = item.title
+        self.isCompleted = item.isCompleted
+        self.order = Int32(order)
+        self.task = parent
     }
 }
 

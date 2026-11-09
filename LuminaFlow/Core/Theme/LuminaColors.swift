@@ -97,4 +97,10 @@ extension Color {
     
     static let cardShadowSoft   = Color.black.opacity(0.02)
     static let cardShadowStrong = Color.black.opacity(0.03)
+    
+    
+    static let addSubtaskPlaceholderFill        = Color(hex: "#F9F8FD")   // kutunun iç zemini
+    static let addSubtaskPlaceholderDashedBorder = Color(hex: "#DDDBEA")  // kesik çizgi rengi
+    static let addSubtaskPlaceholderIcon        = Color(hex: "#8E91A3")   // + ikonu
+    static let addSubtaskPlaceholderLabel       = Color(hex: "#7F8296")   // "Add Subtasks" yazısı
 }

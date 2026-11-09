@@ -63,7 +63,9 @@ final class DashboardViewModel: ObservableObject {
     
     func toggleFinished(_ task: TaskItem) async {
         do {
-            let updated = task.togglingFinished()
+            guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
+            let updated = tasks[index].togglingFinished()
+
             try await repository.update(updated)
             
             do {
@@ -99,6 +101,21 @@ final class DashboardViewModel: ObservableObject {
             try await repository.delete(task.id)
             tasks.removeAll(where: { $0.id == task.id })
             await reminderScheduler.cancel(for: task.id)
+            errorMessage = nil
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+    
+    func toggleSubtask(id: UUID, onTaskID: UUID) async {
+        guard let taskIndex = tasks.firstIndex(where: { $0.id == onTaskID}),
+        let updated = tasks[taskIndex].togglingSubtask(id: id) else {
+            return
+        }
+        
+        do {
+            try await repository.update(updated)
+            tasks[taskIndex] = updated
             errorMessage = nil
         } catch {
             errorMessage = error.localizedDescription

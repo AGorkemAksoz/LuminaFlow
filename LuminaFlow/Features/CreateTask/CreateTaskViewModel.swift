@@ -18,6 +18,12 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     @Published private(set) var isSaving: Bool = false
     @Published private(set) var errorMessage: String? = nil
     
+    // AddSubtask Properties
+    @Published var subtaskItems: [SubtaskItem] = []
+
+    // Taslak (üstteki input alanı)
+    @Published var draftTitle = ""
+    
     // Async Actor repository dependency
     private let repository: TaskRepository
     private let reminderScheduler: ReminderScheduler
@@ -65,7 +71,8 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
                                     reminder: reminderDate,
                                     isFinished: false,
                                     priority: priority,
-                                    tag: taskTag)
+                                    tag: taskTag,
+                                    subtasks: subtaskItems)
             
             try await repository.add(taskItem)
             
@@ -94,5 +101,37 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
     
     func retry() async {
         await save()
+    }
+    
+    // MARK: - Add Subtask Functions
+    var canAdd: Bool {
+        !draftTitle.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+
+    func addDraft() {
+        guard canAdd else { return }
+        let item = SubtaskItem(title: draftTitle.trimmingCharacters(in: .whitespaces),
+                               isCompleted: false)
+        subtaskItems.append(item)
+        draftTitle = ""
+    }
+
+    func toggle(_ item: SubtaskItem) {
+        guard let i = subtaskItems.firstIndex(of: item) else { return }
+        subtaskItems[i].isCompleted.toggle()
+    }
+
+    func delete(_ item: SubtaskItem) {
+        subtaskItems.removeAll { $0.id == item.id }
+    }
+
+    /// Sürükle-bırak ile sıralama: `idString` taşınan öğe, `target` bırakılan öğe.
+    func move(idString: String, onto target: SubtaskItem) {
+        guard let uuid = UUID(uuidString: idString),
+              let from = subtaskItems.firstIndex(where: { $0.id == uuid }),
+              let to = subtaskItems.firstIndex(of: target),
+              from != to else { return }
+            let moved = subtaskItems.remove(at: from)
+        subtaskItems.insert(moved, at: to)
     }
 }

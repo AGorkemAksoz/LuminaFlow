@@ -103,14 +103,18 @@ struct DashboardView: View {
                                },
                                tagLabel: task.tag?.title,
                                notes: task.description, onComplete:  {
-                    Task { await viewModel.toggleFinished(task)}
-                    path.removeAll()
+                    Task {
+                        await viewModel.toggleFinished(task)
+                        path.removeAll()
+                    }
                 }, onDelete: {
                     Task { await viewModel.deleteTask(task)}
                     path.removeAll()
                 }, onEdit: {
                     presentEdit(for: task)
-                })
+                }, onToggleSubtask: { subtaskID in
+                    Task { await viewModel.toggleSubtask(id: subtaskID, onTaskID: task.id)}
+                }, subtasks: task.subtasks)
             }
         }
     }

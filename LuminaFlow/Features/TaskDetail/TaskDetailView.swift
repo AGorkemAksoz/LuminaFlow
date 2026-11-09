@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Model
-
-struct TaskSubtask: Identifiable {
-    let id: UUID
-    var title: String
-    var isCompleted: Bool
-
-    init(id: UUID = UUID(), title: String, isCompleted: Bool = false) {
-        self.id = id
-        self.title = title
-        self.isCompleted = isCompleted
-    }
-}
-
 // MARK: - View
 
 struct TaskDetailView: View {
@@ -31,33 +17,39 @@ struct TaskDetailView: View {
     let dueLabel: String?
     let tagLabel: String?
     let notes: String?
+    let subtasks: [SubtaskItem]
 
-    @State private var subtasks: [TaskSubtask]
     @State private var isShowActionMenu: Bool = false
     @State private var isConfirmingDelete: Bool = false
+    
+    @State private var displayedSubtasks: [SubtaskItem]
 
     var onComplete: (() -> Void)?
     var onEdit: (() -> Void)?
     var onDelete: (() -> Void)?
+    var onToggleSubtask: ((UUID) -> Void)?
 
     init(
         title: String,
         dueLabel: String? = "Due Today",
         tagLabel: String? = "Work",
         notes: String? = nil,
-        subtasks: [TaskSubtask] = [],
         onComplete: (() -> Void)? = nil,
         onDelete: (() -> Void)? = nil,
-        onEdit: (() -> Void)? = nil
+        onEdit: (() -> Void)? = nil,
+        onToggleSubtask: ((UUID) -> Void)? = nil,
+        subtasks: [SubtaskItem]
     ) {
         self.title = title
         self.dueLabel = dueLabel
         self.tagLabel = tagLabel
         self.notes = notes
-        _subtasks = State(initialValue: subtasks)
         self.onComplete = onComplete
         self.onDelete = onDelete
         self.onEdit = onEdit
+        self.onToggleSubtask = onToggleSubtask
+        self.subtasks = subtasks
+        self._displayedSubtasks = State(initialValue: subtasks)
     }
 
     var body: some View {
@@ -69,7 +61,9 @@ struct TaskDetailView: View {
                     header
                     headerGroup
                     notesSection
-                    subtasksSection
+                    if !subtasks.isEmpty {
+                        subtasksSection
+                    }
                     Color.clear.frame(height: 72) // CTA butonun altta kapatmaması için boşluk
                 }
                 .padding(.horizontal, LuminaSpacing.screenHorizontalPadding)
@@ -194,27 +188,30 @@ struct TaskDetailView: View {
             sectionLabel("Sub-tasks")
 
             VStack(spacing: LuminaSpacing.subtaskGap) {
-                ForEach($subtasks) { $subtask in
-                    subtaskRow($subtask)
+                ForEach(displayedSubtasks) { subtask in
+                    subtaskRow(subtask)
                 }
             }
         }
     }
 
-    private func subtaskRow(_ subtask: Binding<TaskSubtask>) -> some View {
+    private func subtaskRow(_ subtask: SubtaskItem) -> some View {
         Button {
             withAnimation(.snappy) {
-                subtask.wrappedValue.isCompleted.toggle()
+                if let i = displayedSubtasks.firstIndex(where: { $0.id == subtask.id }) {
+                    displayedSubtasks[i].isCompleted.toggle()
+                }
+                onToggleSubtask?(subtask.id)
             }
         } label: {
             HStack(spacing: 12) {
-                checkbox(isChecked: subtask.wrappedValue.isCompleted)
+                checkbox(isChecked: subtask.isCompleted)
 
-                Text(subtask.wrappedValue.title)
+                Text(subtask.title)
                     .luminaStyle(.detailSubtask)
-                    .strikethrough(subtask.wrappedValue.isCompleted, color: Color.textMuted)
+                    .strikethrough(subtask.isCompleted, color: Color.textMuted)
                     .foregroundStyle(
-                        subtask.wrappedValue.isCompleted ? Color.textMuted : Color.textPrimary
+                        subtask.isCompleted ? Color.textMuted : Color.textPrimary
                     )
 
                 Spacer()
@@ -291,9 +288,9 @@ struct TaskDetailView: View {
         tagLabel: "Work",
         notes: "Make sure to include the Q3 financial projections and the marketing summary. Keep the tone professional but optimistic.",
         subtasks: [
-            TaskSubtask(title: "Gather financial data"),
-            TaskSubtask(title: "Review with Sarah"),
-            TaskSubtask(title: "Export PDF", isCompleted: true)
+            SubtaskItem(title: "Gather financial data", isCompleted: false),
+            SubtaskItem(title: "Review with Sarah", isCompleted: false),
+            SubtaskItem(title: "Export PDF", isCompleted: true)
         ]
     )
 }
