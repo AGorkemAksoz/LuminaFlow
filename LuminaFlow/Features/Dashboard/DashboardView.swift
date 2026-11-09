@@ -113,7 +113,8 @@ struct DashboardView: View {
                     presentEdit(for: task)
                 }, onToggleSubtask: { subtaskID in
                     Task { await viewModel.toggleSubtask(id: subtaskID, onTaskID: task.id)}
-                }, subtasks: task.subtasks)
+                }, subtasks: task.subtasks,
+                               isFinished: task.isFinished)
             }
         }
     }

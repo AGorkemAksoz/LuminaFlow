@@ -18,6 +18,7 @@ struct TaskDetailView: View {
     let tagLabel: String?
     let notes: String?
     let subtasks: [SubtaskItem]
+    let isFinished: Bool
 
     @State private var isShowActionMenu: Bool = false
     @State private var isConfirmingDelete: Bool = false
@@ -38,7 +39,8 @@ struct TaskDetailView: View {
         onDelete: (() -> Void)? = nil,
         onEdit: (() -> Void)? = nil,
         onToggleSubtask: ((UUID) -> Void)? = nil,
-        subtasks: [SubtaskItem]
+        subtasks: [SubtaskItem],
+        isFinished: Bool
     ) {
         self.title = title
         self.dueLabel = dueLabel
@@ -50,6 +52,7 @@ struct TaskDetailView: View {
         self.onToggleSubtask = onToggleSubtask
         self.subtasks = subtasks
         self._displayedSubtasks = State(initialValue: subtasks)
+        self.isFinished = isFinished
     }
 
     var body: some View {
@@ -257,9 +260,9 @@ struct TaskDetailView: View {
             onComplete?()
         } label: {
             HStack(spacing: 8) {
-                Image(systemName: "checkmark.circle.fill")
+                Image(systemName: isFinished ? "arrow.uturn.backward.circle" : "checkmark.circle.fill")
                     .font(.system(size: 18, weight: .semibold))
-                Text("Complete Task")
+                Text(isFinished ? "Mark Incomplete" : "Complete Task")
                     .luminaStyle(.detailCompleteButton)
             }
             .foregroundStyle(.white)
@@ -291,6 +294,6 @@ struct TaskDetailView: View {
             SubtaskItem(title: "Gather financial data", isCompleted: false),
             SubtaskItem(title: "Review with Sarah", isCompleted: false),
             SubtaskItem(title: "Export PDF", isCompleted: true)
-        ]
+        ], isFinished: false
     )
 }
