@@ -48,17 +48,17 @@ enum Theme {
 }
 
 // MARK: - Main Sheet
-struct AddSubtasksSheet: View {
+struct AddSubtasksSheet<ViewModel: SubtaskDrafting>: View {
     
     var status: String = "Active"
 
     @FocusState private var inputFocused: Bool
     
-    @ObservedObject var viewModel: CreateTaskViewModel
+    @ObservedObject var viewModel: ViewModel
     @Environment(\.dismiss) private var dismiss
 
     init(status: String = "Active",
-         viewModel: CreateTaskViewModel) {
+         viewModel: ViewModel) {
         self.status = status
         self.viewModel = viewModel
     }

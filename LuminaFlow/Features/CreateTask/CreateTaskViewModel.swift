@@ -135,3 +135,7 @@ final class CreateTaskViewModel: ObservableObject, Identifiable {
         subtaskItems.insert(moved, at: to)
     }
 }
+
+
+// MARK: - SubtaskDrafting Protocol Variables and Functions
+extension CreateTaskViewModel: SubtaskDrafting {}
