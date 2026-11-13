@@ -101,6 +101,9 @@ struct DashboardView: View {
                                    TaskDateFormatting.dueLabel(for: $0, calendar: viewModel.calendar)
                                },
                                tagLabel: task.tag?.title,
+                               tagIcon: task.tag?.icon,
+                               priorityLabel: task.priority.title,
+                               reminderLabel: task.reminder?.formatted(date: .omitted, time: .shortened),
                                notes: task.description, onComplete:  {
                     Task {
                         await viewModel.toggleFinished(task)

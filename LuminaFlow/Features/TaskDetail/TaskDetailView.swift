@@ -16,6 +16,9 @@ struct TaskDetailView: View {
     let title: String
     let dueLabel: String?
     let tagLabel: String?
+    let tagIcon: String?
+    let priorityLabel: String?
+    let reminderLabel: String?
     let notes: String?
     let subtasks: [SubtaskItem]
     let isFinished: Bool
@@ -34,6 +37,9 @@ struct TaskDetailView: View {
         title: String,
         dueLabel: String? = "Due Today",
         tagLabel: String? = "Work",
+        tagIcon: String? = "briefcase.fill",
+        priorityLabel: String? = "Medium",
+        reminderLabel: String? = nil,
         notes: String? = nil,
         onComplete: (() -> Void)? = nil,
         onDelete: (() -> Void)? = nil,
@@ -45,6 +51,9 @@ struct TaskDetailView: View {
         self.title = title
         self.dueLabel = dueLabel
         self.tagLabel = tagLabel
+        self.tagIcon = tagIcon
+        self.priorityLabel = priorityLabel
+        self.reminderLabel = reminderLabel
         self.notes = notes
         self.onComplete = onComplete
         self.onDelete = onDelete
@@ -135,12 +144,25 @@ struct TaskDetailView: View {
     }
 
     private var chipsRow: some View {
-        HStack(spacing: 10) {
-            if let dueLabel {
-                chip(icon: "calendar", text: dueLabel)
+        VStack(alignment: .leading) {
+            HStack(spacing: 10) {
+                if let dueLabel {
+                    chip(icon: "calendar", text: dueLabel)
+                }
+                
+                if let priorityLabel {
+                    chip(icon: "flag", text: priorityLabel)
+                }
             }
-            if let tagLabel {
-                chip(icon: "briefcase.fill", text: tagLabel)
+            
+            HStack(spacing: 10) {
+                if let reminderLabel {
+                    chip(icon: "bell", text: reminderLabel)
+                }
+                
+                if let tagLabel, let tagIcon {
+                    chip(icon: tagIcon, text: tagLabel)
+                }
             }
         }
     }
@@ -290,6 +312,7 @@ struct TaskDetailView: View {
         title: "Draft Quarterly Report",
         dueLabel: "Due Today",
         tagLabel: "Work",
+        reminderLabel: "9:00 AM",
         notes: "Make sure to include the Q3 financial projections and the marketing summary. Keep the tone professional but optimistic.",
         subtasks: [
             SubtaskItem(title: "Gather financial data", isCompleted: false),
