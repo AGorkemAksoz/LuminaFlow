@@ -30,6 +30,10 @@ struct CreateTaskSheet: View {
             
             taskChipsGridView
             
+            if viewModel.subtaskItems.count > 0 {
+                SubtasksView(items: $viewModel.subtaskItems)
+            }
+            
             addSubtaskPlaceHolder
             
             Spacer()
@@ -164,7 +168,7 @@ extension CreateTaskSheet {
     
     private var addSubtaskPlaceHolder: some View {
         Button(action: { isPresentingAddSubtasksSheet = true }) {
-            VStack(spacing: 10) {
+            VStack(spacing: viewModel.subtaskItems.count > 0 ? 2 :  10) {
                 Image(systemName: "plus.circle")
                     .font(.system(size: 26, weight: .light))
                     .foregroundStyle(Color.addSubtaskPlaceholderIcon)
@@ -174,7 +178,7 @@ extension CreateTaskSheet {
                     .foregroundStyle(Color.addSubtaskPlaceholderLabel)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 122)
+            .frame(height: viewModel.subtaskItems.count > 0 ? 61 : 122)
             .background(
                 Color.addSubtaskPlaceholderFill,
                 in: RoundedRectangle(cornerRadius: 20, style: .continuous)
