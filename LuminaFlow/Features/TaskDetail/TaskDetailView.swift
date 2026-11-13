@@ -96,6 +96,7 @@ struct TaskDetailView: View {
             Button("Cancel", role: .cancel) { }
         })
         .navigationBarBackButtonHidden()
+        .background(EnableInteractivePopGesture())
     }
 
     // MARK: Header (back / more)
